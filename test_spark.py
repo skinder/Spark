@@ -1,7 +1,4 @@
 from pyspark.sql import SparkSession
-import findspark
-
-# findspark.init()
 
 spark = SparkSession.builder \
     .master("local[1]") \
@@ -27,3 +24,15 @@ df.filter(df['salary'] > 3000).show()
 df.groupBy("salary").count().show()
 
 print(df.show())
+
+'''
+df = spark.read.load("examples/src/main/resources/people.json", format="json")
+df = spark.read.parquet("examples/src/main/resources/users.parquet")
+(df
+    .write
+    .partitionBy("favorite_color")
+    .bucketBy(42, "name")
+    .saveAsTable("people_partitioned_bucketed"))
+    
+df.write.partitionBy("favorite_color").format("parquet").save("namesPartByColor.parquet")
+'''
